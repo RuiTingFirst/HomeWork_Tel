@@ -68,7 +68,6 @@ public class DialFragment extends Fragment implements View.OnClickListener {
         btnTel.setOnClickListener(this);
         btnDEL.setOnClickListener(this);
 
-
     }
 
     @Override
@@ -77,17 +76,13 @@ public class DialFragment extends Fragment implements View.OnClickListener {
             case R.id.btn_0:
                 str += "0";
 
-                edt.setText(str);
-
                 break;
             case R.id.btn_1:
                 str += "1";
-                edt.setText(str);
 
                 break;
             case R.id.btn_2:
                 str += "2";
-                edt.setText(str);
 
                 break;
             case R.id.btn_3:
@@ -97,42 +92,34 @@ public class DialFragment extends Fragment implements View.OnClickListener {
                 break;
             case R.id.btn_4:
                 str += "4";
-                edt.setText(str);
 
                 break;
             case R.id.btn_5:
                 str += "5";
-                edt.setText(str);
 
                 break;
             case R.id.btn_6:
                 str += "6";
-                edt.setText(str);
 
                 break;
             case R.id.btn_7:
                 str += "7";
-                edt.setText(str);
 
                 break;
             case R.id.btn_8:
                 str += "8";
-                edt.setText(str);
 
                 break;
             case R.id.btn_9:
                 str += "9";
-                edt.setText(str);
 
                 break;
             case R.id.btn_pound:
                 str += "*";
-                edt.setText(str);
 
                 break;
             case R.id.btn_hash:
                 str +=  "#";
-                edt.setText(str);
 
                 break;
             case R.id.btn_tel:

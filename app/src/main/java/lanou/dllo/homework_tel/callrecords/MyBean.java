@@ -7,6 +7,20 @@ public class MyBean {
     String name;
     String number;
     String date;
+    int image;
+
+    public int getImage() {
+        return image;
+    }
+
+    public MyBean setImage(int image) {
+        this.image = image;
+        return this;
+    }
+
+    public MyBean(int image) {
+        this.image = image;
+    }
 
     public MyBean(String name, String number, String date) {
         this.name = name;

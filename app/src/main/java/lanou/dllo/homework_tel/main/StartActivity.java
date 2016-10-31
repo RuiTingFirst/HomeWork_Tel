@@ -31,6 +31,7 @@ public class StartActivity extends Activity {
     private Bitmap bitmap;
     private CountDownTimer timer;
 
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -39,9 +40,10 @@ public class StartActivity extends Activity {
         btnStart = (Button) findViewById(R.id.btn_start);
 
         String str = "http://img3.duitang.com/uploads/item/201208/08/20120808142750_5shit.jpeg";
+
+        setTimeDesign();
         StartAsyncTask asyncTask = new StartAsyncTask();
         asyncTask.execute(str);
-        setTimeDesign();
 
     }
 
@@ -72,6 +74,7 @@ public class StartActivity extends Activity {
     }
 
     private void setTimeDesign() {
+
         btnStart.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -85,11 +88,19 @@ public class StartActivity extends Activity {
         // CountDownTimer(a, b)中的参数
         // a, 代表总的倒计时时间, 结束后调用onFinish方法
         // b, 代表每隔b时长调用一次onTick方法
-        timer = new CountDownTimer(7000, 1000) {
-
+        timer = new CountDownTimer(6000, 1000) {
+            int a = 5;
             @Override
             public void onTick(long l) {
-                btnStart.setText((l / 1000 - 1) + "秒");
+
+                a--;
+                btnStart.setText(a + "s");
+                if (a == 1) {
+                    btnStart.setText(1 + "s");
+                    onFinish();
+                }
+//                 参数l / 1000 不是整数
+//                btnStart.setText((l / 1000) + "秒");
 
             }
 
@@ -101,6 +112,7 @@ public class StartActivity extends Activity {
                 timer.cancel();
                 finish();
             }
+
         };
         // 启动
         timer.start();

@@ -10,6 +10,7 @@ import android.widget.TextView;
 import java.util.ArrayList;
 
 import lanou.dllo.homework_tel.R;
+import lanou.dllo.homework_tel.tools.RecordBean;
 
 /**
  * Created by dllo on 16/10/25.
@@ -17,14 +18,15 @@ import lanou.dllo.homework_tel.R;
 public class CallRecordsAdapter extends BaseAdapter {
 
     Context mContext;
-    ArrayList<MyBean> myBeen;
+    ArrayList<RecordBean> myBeen;
 
     public CallRecordsAdapter(Context mContext) {
         this.mContext = mContext;
     }
 
-    public void setMyBeen(ArrayList<MyBean> myBeen) {
+    public void setMyBeen(ArrayList<RecordBean> myBeen) {
         this.myBeen = myBeen;
+        notifyDataSetChanged();
     }
 
     @Override

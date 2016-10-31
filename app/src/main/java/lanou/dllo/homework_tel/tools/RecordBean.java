@@ -1,21 +1,12 @@
-package lanou.dllo.homework_tel.callrecords;
+package lanou.dllo.homework_tel.tools;
 
 /**
- * Created by dllo on 16/10/25.
+ * Created by dllo on 16/10/31.
  */
-public class MyBean {
+public class RecordBean {
     String name;
     String number;
     String date;
-
-    public MyBean(){
-
-    }
-    public MyBean(String name, String number, String date) {
-        this.name = name;
-        this.number = number;
-        this.date = date;
-    }
 
     public String getName() {
         return name;

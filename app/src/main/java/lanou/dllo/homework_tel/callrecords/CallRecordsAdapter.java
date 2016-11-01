@@ -74,4 +74,8 @@ public class CallRecordsAdapter extends BaseAdapter {
             dateTV = (TextView) view.findViewById(R.id.tv_date);
         }
     }
+    public void delete(MyBean bean){
+        myBeen.remove(bean);
+        notifyDataSetChanged();
+    }
 }

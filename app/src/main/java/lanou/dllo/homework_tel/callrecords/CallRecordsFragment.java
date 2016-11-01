@@ -1,16 +1,27 @@
 package lanou.dllo.homework_tel.callrecords;
 
+import android.Manifest;
+import android.content.ContentResolver;
 import android.content.Context;
+import android.content.Intent;
+import android.content.pm.PackageManager;
+import android.database.Cursor;
+import android.net.Uri;
 import android.os.Bundle;
+import android.provider.CallLog;
+import android.provider.ContactsContract;
 import android.support.annotation.Nullable;
+import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.Fragment;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.ListView;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 
 import lanou.dllo.homework_tel.R;
@@ -61,21 +72,38 @@ public class CallRecordsFragment extends Fragment implements View.OnClickListene
         tools = new DBTools(mContext);
 
         adapter = new CallRecordsAdapter(mContext);
+
+        queryRecordFromSystem();
+
         adapter.setMyBeen(beanArrayList);
         lvRecords.setAdapter(adapter);
+        lvRecords.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
+                Intent intent = new Intent(Intent.ACTION_CALL, Uri.parse("tel:" + beanArrayList.get(i).getNumber()));
+                startActivity(intent);
+            }
+        });
+        lvRecords.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
+            @Override
+            public boolean onItemLongClick(AdapterView<?> adapterView, View view, int i, long l) {
+//                Cursor cursor = mContext.getContentResolver().delete(CallLog.Calls.CONTENT_URI,"number = ?", new String[]{});
+                return true;
+            }
+        });
 
     }
 
     @Override
     public void onClick(View view) {
-        switch (view.getId()){
+        switch (view.getId()) {
             case R.id.btn_add:
-                    RecordBean bean = new RecordBean();
-                    bean.setName("张三");
-                    bean.setNumber("1357924680");
-                    bean.setDate("2016.10.31");
+                RecordBean bean = new RecordBean();
+                bean.setName("张三");
+                bean.setNumber("1357924680");
+                bean.setDate("2016.10.31");
 
-                    tools.insertRecordTable(bean);
+                tools.insertRecordTable(bean);
                 beanArrayList = tools.queryRecordTable();
                 adapter.setMyBeen(beanArrayList);
                 lvRecords.setAdapter(adapter);
@@ -96,4 +124,43 @@ public class CallRecordsFragment extends Fragment implements View.OnClickListene
                 break;
         }
     }
+
+    private void queryRecordFromSystem() {
+        ContentResolver resolver = mContext.getContentResolver();
+        if (ActivityCompat.checkSelfPermission(mContext, Manifest.permission.READ_CALL_LOG) != PackageManager.PERMISSION_GRANTED) {
+            // TODO: Consider calling
+            //    ActivityCompat#requestPermissions
+            // here to request the missing permissions, and then overriding
+            //   public void onRequestPermissionsResult(int requestCode, String[] permissions,
+            //                                          int[] grantResults)
+            // to handle the case where the user grants the permission. See the documentation
+            // for ActivityCompat#requestPermissions for more details.
+            return;
+        }
+        Cursor cursor = resolver.query(CallLog.Calls.CONTENT_URI, null, null, null, null);
+        if (cursor != null){
+            cursor.moveToFirst();
+            do {
+                String name = cursor.getString(cursor.getColumnIndex(CallLog.Calls.CACHED_NAME));
+                String number = cursor.getString(cursor.getColumnIndex(CallLog.Calls.NUMBER));
+                String date = cursor.getString(cursor.getColumnIndex(CallLog.Calls.DATE));
+
+                SimpleDateFormat format = new SimpleDateFormat("yyyy/MM/dd hh:mm:ss");
+                String time = format.format(Long.valueOf(date));
+                RecordBean bean = new RecordBean();
+                if (name == null){
+                    bean.setName("陌生人");
+                } else {
+                    bean.setName(name);
+                }
+                bean.setDate(time);
+                bean.setNumber(number);
+                beanArrayList.add(bean);
+
+            }
+            while (cursor.moveToNext());
+            cursor.close();
+        }
+    }
+
 }

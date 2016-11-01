@@ -12,9 +12,11 @@ public class MyHelper extends SQLiteOpenHelper {
         super(context, name, factory, version);
     }
 
+    // 创建表
     @Override
     public void onCreate(SQLiteDatabase sqLiteDatabase) {
         sqLiteDatabase.execSQL("create table record(id integer primary key autoincrement,name text,number text, date text)");
+        sqLiteDatabase.execSQL("create table contact(id integer primary key autoincrement,name text, number text,image blob)");
     }
 
     @Override

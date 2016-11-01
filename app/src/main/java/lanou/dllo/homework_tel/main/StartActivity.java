@@ -42,12 +42,16 @@ public class StartActivity extends Activity {
         String str = "http://img3.duitang.com/uploads/item/201208/08/20120808142750_5shit.jpeg";
 
         setTimeDesign();
+        // 开启异步任务
         StartAsyncTask asyncTask = new StartAsyncTask();
         asyncTask.execute(str);
+
 
     }
 
     class StartAsyncTask extends AsyncTask<String, Integer, Bitmap> {
+
+        // 结果回调
         @Override
         protected void onPostExecute(Bitmap bitmap) {
             super.onPostExecute(bitmap);
@@ -55,6 +59,7 @@ public class StartActivity extends Activity {
 
         }
 
+        // 在子线程进行网络图片获取的耗时操作
         @Override
         protected Bitmap doInBackground(String... strings) {
             try {
@@ -73,49 +78,51 @@ public class StartActivity extends Activity {
         }
     }
 
+    // 倒计时方法
     private void setTimeDesign() {
 
-        btnStart.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Intent intent = new Intent(StartActivity.this, MainActivity.class);
-                startActivity(intent);
-                // 如果界面已经跳转则不再倒计时
-                timer.cancel();
-                finish();
-            }
-        });
+        timer = new CountDownTimer(6000, 1000) {
         // CountDownTimer(a, b)中的参数
         // a, 代表总的倒计时时间, 结束后调用onFinish方法
         // b, 代表每隔b时长调用一次onTick方法
-        timer = new CountDownTimer(6000, 1000) {
             int a = 5;
             @Override
             public void onTick(long l) {
-
                 a--;
                 btnStart.setText(a + "s");
                 if (a == 1) {
                     btnStart.setText(1 + "s");
                     onFinish();
                 }
-//                 参数l / 1000 不是整数
+                 // 参数l / 1000 不是整数
 //                btnStart.setText((l / 1000) + "秒");
-
             }
-
             @Override
             public void onFinish() {
                 Intent intent = new Intent(StartActivity.this, MainActivity.class);
                 startActivity(intent);
                 // 如果界面已经跳转则不再倒计时
-                timer.cancel();
+//                timer.cancel();
                 finish();
             }
-
         };
         // 启动
         timer.start();
+        btnStart.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(StartActivity.this, MainActivity.class);
+                startActivity(intent);
+                // 如果界面已经跳转则不再倒计时
+//                timer.cancel();
+                finish();
+            }
+        });
     }
 
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        timer.cancel();
+    }
 }

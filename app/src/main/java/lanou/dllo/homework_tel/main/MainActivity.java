@@ -28,6 +28,7 @@ public class MainActivity extends AppCompatActivity {
         tb = (TabLayout) findViewById(R.id.tb_main);
         vp = (ViewPager) findViewById(R.id.vp_main);
 
+        // 绑定fragment
         ArrayList<Fragment> fragments = new ArrayList<>();
         fragments.add(new DialFragment());
         fragments.add(new CallRecordsFragment());
@@ -41,6 +42,7 @@ public class MainActivity extends AppCompatActivity {
 
         tb.setTabTextColors(Color.BLUE, Color.CYAN);
 
+        // 点击状态变色
         tb.getTabAt(0).setIcon(R.drawable.selecte_dail);
         tb.getTabAt(1).setIcon(R.drawable.selecte_call_log);
         tb.getTabAt(2).setIcon(R.drawable.selecte_contact);
